@@ -19,7 +19,7 @@ Author: Dennis Elser (code: [github](https://github.com/patois), other rants: [t
 ## Introduction
 In reference to its [web representation](https://www.winmagic.com/products/full-disk-encryption-for-windows), Winmagic SecureDoc "allows businesses to deal with the security of their IT environment efficiently leveraging features including: Full Disk Encryption (FDE), Multi-Factor Authentication, Removable Media Container Encryption (RMCE) and File and Folder Encryption (FFE). These features help businesses increase security, mitigate business risk and meet government and regulatory requirements for hard drive encryption."
 
-The Winmagic SecureDoc product, which is available in standalone and enterprise editions, is affected by two local privilege escalation vulnerabilities ([CVE-2020-11519](#cve-2020-11519) and [CVE-2020-11520](#cve-2020-11520)) in versions 8.3 and 8.5. After the vulnerabilities had been reported to Winmagic in late March, the vendor released a patch (version 8.5SR2) for both the vulnerabilities in [mid June 2020](#disclosure-timeline). However, this patch was found to address the vulnerabilities insufficiently, which also made version 8.5SR2 vulnerable to the reported flaws. Although technical details about the vulnerabilities had been held back for this reason, the flaws have to be [considered public](https://www.zynamics.com/bindiff.html) since then. According to the vendor, another patch is still in the pipeline, roughly 106 days after the initial vulnerability report to Winmagic. Versions of SecureDoc older than 8.3 have not been tested but can be assumed to be affected as well, based on the affected component's code
+The Winmagic SecureDoc product, which is available in standalone and enterprise editions, is affected by two local privilege escalation vulnerabilities ([CVE-2020-11519](#cve-2020-11519) and [CVE-2020-11520](#cve-2020-11520)) in versions 8.3 and 8.5. After the vulnerabilities had been reported to Winmagic in late March, the vendor released a patch (version 8.5SR2) in [mid June 2020](#disclosure-timeline). However, this patch was found to address the vulnerabilities insufficiently, which also made version 8.5SR2 vulnerable to the reported flaws. Although technical details about the vulnerabilities had been held back for this reason, the flaws have to be [considered public](https://www.zynamics.com/bindiff.html) since then. According to the vendor, another patch is still in the pipeline, roughly 106 days after the initial vulnerability report to Winmagic. Versions of SecureDoc older than 8.3 have not been tested but can be assumed to be affected as well, based on the affected component's code
 
 Successful exploitation of any of the vulnerabilities will lead to escalation of privileges to SYSTEM for locally authenticated attackers.
 
@@ -109,7 +109,7 @@ __int64 __fastcall sub_29CD4(char *controlled_addr, PIRP a2, char mode)
   //[...snip...]
 }
 ```
-Just like reading raw disk ectors, writing disk sectors from user mode is made possible by calling an I/O control handler of the SDDisk2k.sys driver and is implemented in a similar fashion, using the same data structure. Given compatibility with this driver's protocol, there is nothing that will prevent arbitray user mode applications from completely compromising the Operating System. Unless protected by a secure boot mechanism, this even includes installation of software that is allowed to run as early as during the system's boot process (ransomware, bootkits, custom implants...).
+Just like reading raw disk sectors, writing disk sectors from user mode is made possible by calling IOCTL handler 0x8D1F2820, which processes the same data structure and is implemented in a similar fashion. Given compatibility with this driver's protocol, there is nothing that will prevent arbitray user mode applications from completely compromising the Operating System. Unless protected by a secure boot mechanism, this even includes installation of software that is allowed to run as early as during the system's boot process (ransomware, bootkits, custom implants...).
 
 ### CVE-2020-11520
 Further examination of the "SDDisk2k.sys" driver's service handlers revealed that memory addresses from user mode applications are processed without prior validation. In some cases, memory accessed by these pointers is blindly written to by the driver, which can be abused by attackers to create kernel write primitives. Whereas all of the write primitives allow direct control of **where** to write data to, unfortunately none was found that'd allow direct control of **what** data to write. With the exception of [CVE-2020-11519](#cve-2020-11519), whose exploitation in this context would require an additional detour through disk read/write operations, which is something I consider a dirty approach and thus wanted to avoid. However, one particular handler was identified that admittedly didn't allow the data itself to be controlled but still turned out to be good enough for being repurposed by other means.
@@ -248,9 +248,9 @@ SeIncreaseWorkingSetPrivilege   Increase a process working set           Disable
 SeTimeZonePrivilege             Change the time zone                     Disabled
 
 ```
-The PoC exploit code can be found [here](./sd_poc.py). It targets v8.5 of the 64bit version of Winmagic SecureDoc but might work on older versions (untested).
+The PoC exploit code can be found [here](./sd_poc.py). It targets v8.5 of Winmagic SecureDoc x64 but might work on older versions (untested).
 
-In case you've made it till here but are super bored still, feel free to dial 0x8D1F2848 ;)
+In case you've made it till here but are super bored still, feel free to dial IOCTL code 0x8D1F2848 ;)
 
 ``` c
 case 0x8D1F2848:
