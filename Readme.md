@@ -306,7 +306,7 @@ Date       | Comment
 2020-06-23 | Winmagic provided information about an intended release of a hotfix within
            | a two week time frame, starting with the passing of the 90-days deadline
 2020-06-30 | Asked Winmagic about the current status
-2020-06-30 | Winmagic confirmed the release of a fix before 2020-07-08
+2020-06-30 | Winmagic assured that a fix would be made available before 2020-07-08
 2020-07-08 | Winmagic informed about delay of release to 2020-07-09 or 2020-07-10, latest
 2020-07-10 | Public release of this information, no public fix available (106 days)
 ```
