@@ -19,7 +19,7 @@ Author: Dennis Elser (code: [github](https://github.com/patois), other rants: [t
 ## Introduction
 In reference to its [web representation](https://www.winmagic.com/products/full-disk-encryption-for-windows), Winmagic SecureDoc "allows businesses to deal with the security of their IT environment efficiently leveraging features including: Full Disk Encryption (FDE), Multi-Factor Authentication, Removable Media Container Encryption (RMCE) and File and Folder Encryption (FFE). These features help businesses increase security, mitigate business risk and meet government and regulatory requirements for hard drive encryption."
 
-The Winmagic SecureDoc product, which is available in standalone and enterprise editions, is affected by two local privilege escalation vulnerabilities ([CVE-2020-11519](#cve-2020-11519) and [CVE-2020-11520](#cve-2020-11520)) in versions 8.3 and 8.5. After the vulnerabilities had been reported to Winmagic in late March, the vendor released a patch (version 8.5SR2) in [mid June 2020](#disclosure-timeline). However, this patch was found to address the vulnerabilities insufficiently, which also made version 8.5SR2 vulnerable to the reported flaws. Although technical details about the vulnerabilities had been held back for this reason, the flaws have to be [considered public](https://www.zynamics.com/bindiff.html) since then. According to the vendor, another patch is still in the pipeline, roughly 106 days after the initial vulnerability report to Winmagic. Versions of SecureDoc older than 8.3 have not been tested but can be assumed to be affected as well, based on the affected component's code
+The Winmagic SecureDoc product, which is available in standalone and enterprise editions, is affected by two local privilege escalation vulnerabilities ([CVE-2020-11519](#cve-2020-11519) and [CVE-2020-11520](#cve-2020-11520)) in versions 8.3 and 8.5. After the vulnerabilities had been reported to Winmagic in late March, the vendor released a patch (version 8.5SR2) in [mid June 2020](#disclosure-timeline). However, this patch was found to address the vulnerabilities insufficiently, which also made version 8.5SR2 vulnerable to the reported flaws. Although technical details about the vulnerabilities had been held back for this reason, the flaws have to be [considered public](https://www.zynamics.com/bindiff.html) since then. ~~According to the vendor, another patch is still in the pipeline, roughly 106 days after the initial vulnerability report to Winmagic.~~ On July 15th, 111 days after the initial vulnerability report to the vendor, Winmagic released SecureDoc v8.5 SR2 HF1 to customers, which reportedly fixes CVE-2020-11519 and CVE-2020-11520. Versions of SecureDoc older than 8.3 have not been tested but can be assumed to be affected as well, based on the affected component's code
 
 Successful exploitation of any of the vulnerabilities will lead to escalation of privileges to SYSTEM for locally authenticated attackers.
 
@@ -309,10 +309,11 @@ Date       | Comment
 2020-06-30 | Winmagic assured that a fix would be made available before 2020-07-08
 2020-07-08 | Winmagic informed about delay of release to 2020-07-09 or 2020-07-10, latest
 2020-07-10 | Public release of this information, no public fix available (106 days)
+2020-07-15 | Winmagic released SecureDoc v8.5 SR2 HF1 (111 days)
 ```
 
 ## Solution
-None
+Update to Winmagic SecureDoc v8.5 SR2 HF1.
 
 ## Checksums
 | Filename             | Version | Hash (SHA-256) |
