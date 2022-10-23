@@ -2,8 +2,7 @@
 
 Date: June 2020
 
-Author: Dennis Elser (code: [github](https://github.com/patois), other rants: [twitter](https://twitter.com/pat0is))
-
+Author: Dennis Elser (code: [github](https://github.com/patois))
 ## Table of Contents
 
 - [Introduction](#introduction)
